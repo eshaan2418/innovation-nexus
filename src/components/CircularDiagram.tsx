@@ -95,7 +95,7 @@ const CircularDiagram: React.FC = () => {
           
           {/* Curved text for Entrepreneurship — positioned at bottom (south) */}
           <defs>
-            <path id="entreArc" d={describeArcCW(cx, cy, (ring2Inner + ring2Outer) / 2 + 1, 130, 230)} />
+            <path id="entreArc" d={describeArc(cx, cy, (ring2Inner + ring2Outer) / 2 - 1, 130, 230)} />
           </defs>
           <text fill="#FFFFFF" fontSize="13" fontFamily="'IBM Plex Sans', sans-serif" fontWeight="500">
             <textPath href="#entreArc" startOffset="50%" textAnchor="middle">
