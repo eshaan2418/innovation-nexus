@@ -1,34 +1,46 @@
 import React, { useState } from "react";
 
-const PROFESSORS = [
-  { id: "A", name: "Professor A", lab: "Nano-Materials Lab", interests: "Nanoscale composites, thin-film technologies" },
-  { id: "B", name: "Professor B", lab: "Biomechanics Lab", interests: "Tissue engineering, bio-implants" },
-  { id: "C", name: "Professor C", lab: "3D Printing Centre", interests: "Metal additive manufacturing, lattice structures" },
-  { id: "D", name: "Professor D", lab: "Renewable Energy Lab", interests: "Solar cells, green hydrogen" },
-  { id: "E", name: "Professor E", lab: "AI & Materials Lab", interests: "ML for materials discovery" },
-  { id: "F", name: "Professor F", lab: "Polymer Science Lab", interests: "Smart polymers, hydrogels" },
-  { id: "G", name: "Professor G", lab: "Aerospace Structures Lab", interests: "Lightweight alloys, fatigue analysis" },
-  { id: "H", name: "Professor H", lab: "Environmental Tech Lab", interests: "Waste-to-energy, water purification" },
-  { id: "I", name: "Professor I", lab: "Computational Lab", interests: "FEA modelling, multiscale simulation" },
-  { id: "J", name: "Professor J", lab: "MedTech Innovation Lab", interests: "Wearable sensors, diagnostics" },
+interface FacultyMember {
+  id: string;
+  name: string;
+  shortName: string;
+  areas: { ra1?: number; ra2?: number; ra3?: number; ra4?: number };
+}
+
+const FACULTY: FacultyMember[] = [
+  { id: "1", name: "Andrew Maxwell", shortName: "A. Maxwell", areas: { ra4: 1 } },
+  { id: "2", name: "Aleksander Czekanski", shortName: "A. Czekanski", areas: { ra1: 2, ra2: 1 } },
+  { id: "3", name: "Zheng Hong (George) Zhu", shortName: "G. Zhu", areas: { ra1: 1, ra2: 2 } },
+  { id: "4", name: "Solomon Boakye-Yiadom", shortName: "S. Boakye-Y.", areas: { ra1: 2, ra2: 1 } },
+  { id: "5", name: "Ronald Hanson", shortName: "R. Hanson", areas: { ra3: 1 } },
+  { id: "6", name: "Garrett Melenka", shortName: "G. Melenka", areas: { ra1: 2, ra2: 1 } },
+  { id: "7", name: "Marina Freire-Gormaly", shortName: "M. Freire-G.", areas: { ra1: 3, ra3: 1 } },
+  { id: "8", name: "Cuiying Jian", shortName: "C. Jian", areas: { ra2: 1, ra3: 2 } },
+  { id: "9", name: "Pouya Rezai", shortName: "P. Rezai", areas: { ra1: 3, ra2: 2, ra3: 1 } },
+  { id: "10", name: "Reza Rizvi", shortName: "R. Rizvi", areas: { ra2: 1 } },
+  { id: "11", name: "Hani Tabatabaei", shortName: "H. Tabatabaei", areas: { ra2: 1 } },
 ];
 
+// Segments map to research areas: index 0 = RA1, index 1 = RA2, index 2 = RA3
 const SEGMENTS = [
   {
-    lines: ["Advanced Materials", "Biomaterials", "Development", "Modelling", "Characterisation"],
+    raKey: "ra1" as const,
+    lines: ["Additive Manufacturing", "Mechatronics", "Aerospace", "Machine Learning"],
     color: "#B7AEA9",
     textColor: "#111111",
     startAngle: -30,
     endAngle: 90,
   },
   {
-    lines: ["Additive Manufacturing", "Medtronics", "Aerospace", "Machine Learning"],
+    raKey: "ra2" as const,
+    lines: ["Advanced Materials", "Biomaterials", "Development", "Modelling", "Characterisation"],
     color: "#D6CFCA",
     textColor: "#111111",
     startAngle: 90,
     endAngle: 210,
   },
   {
+    raKey: "ra3" as const,
     lines: ["Sustainable Energy", "Environmental", "Technologies"],
     color: "#686260",
     textColor: "#FFFFFF",
@@ -49,7 +61,6 @@ function describeArc(cx: number, cy: number, r: number, startAngle: number, endA
   return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 0 ${end.x} ${end.y}`;
 }
 
-// Arc going clockwise (for bottom text)
 function describeArcCW(cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
   const start = polarToCartesian(cx, cy, r, startAngle);
   const end = polarToCartesian(cx, cy, r, endAngle);
@@ -72,9 +83,22 @@ function describeSegment(cx: number, cy: number, innerR: number, outerR: number,
   ].join(" ");
 }
 
+function getHighlightOpacity(strength: number): number {
+  if (strength === 3) return 1;
+  if (strength === 2) return 0.85;
+  if (strength === 1) return 0.7;
+  return 0.35; // faded for non-relevant
+}
+
+function getHighlightFilter(strength: number): string {
+  if (strength === 3) return "brightness(1.25)";
+  if (strength === 2) return "brightness(1.12)";
+  if (strength === 1) return "brightness(1.05)";
+  return "brightness(0.85)";
+}
+
 const CircularDiagram: React.FC = () => {
   const [hoveredProf, setHoveredProf] = useState<string | null>(null);
-  const [hoveredSeg, setHoveredSeg] = useState<number | null>(null);
 
   const cx = 400;
   const cy = 400;
@@ -84,30 +108,78 @@ const CircularDiagram: React.FC = () => {
   const ring3Inner = 120;
   const ring3Outer = 260;
   const profR = 310;
-  const nodeR = 28;
+  const nodeR = 30;
+
+  const hoveredFaculty = FACULTY.find((f) => f.id === hoveredProf);
+  const anyHovered = hoveredProf !== null;
 
   return (
     <div className="w-full flex items-center justify-center py-8 md:py-16">
       <div className="w-full max-w-[750px] aspect-square relative">
         <svg viewBox="0 0 800 800" className="w-full h-full" aria-label="MTEC Research Ecosystem Diagram">
-          {/* Ring 2 — Entrepreneurship */}
-          <circle cx={cx} cy={cy} r={(ring2Inner + ring2Outer) / 2} fill="none" stroke="#CC3333" strokeWidth={ring2Outer - ring2Inner} />
-          
-          {/* Curved text for Entrepreneurship — positioned at bottom (south) */}
+          {/* Glow filter for highlights */}
           <defs>
-            <path id="entreArc" d={describeArc(cx, cy, (ring2Inner + ring2Outer) / 2 - 1, 130, 230)} />
+            <filter id="segGlow" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <filter id="entreGlow" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
-          <text fill="#FFFFFF" fontSize="13" fontFamily="'IBM Plex Sans', sans-serif" fontWeight="500">
-            <textPath href="#entreArc" startOffset="50%" textAnchor="middle">
-              Entrepreneurship
-            </textPath>
-          </text>
+
+          {/* Ring 2 — Entrepreneurship (RA4) */}
+          {(() => {
+            const ra4Strength = hoveredFaculty?.areas.ra4 ?? 0;
+            const entreHighlighted = anyHovered && ra4Strength > 0;
+            const entreOpacity = anyHovered ? (ra4Strength > 0 ? 1 : 0.4) : 1;
+            return (
+              <>
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={(ring2Inner + ring2Outer) / 2}
+                  fill="none"
+                  stroke="#CC3333"
+                  strokeWidth={ring2Outer - ring2Inner}
+                  opacity={entreOpacity}
+                  filter={entreHighlighted ? "url(#entreGlow)" : undefined}
+                  style={{ transition: "opacity 300ms ease, filter 300ms ease" }}
+                />
+                <defs>
+                  <path id="entreArc" d={describeArc(cx, cy, (ring2Inner + ring2Outer) / 2 - 1, 130, 230)} />
+                </defs>
+                <text
+                  fill="#FFFFFF"
+                  fontSize="13"
+                  fontFamily="'IBM Plex Sans', sans-serif"
+                  fontWeight="500"
+                  opacity={entreOpacity}
+                  style={{ transition: "opacity 300ms ease" }}
+                >
+                  <textPath href="#entreArc" startOffset="50%" textAnchor="middle">
+                    Entrepreneurship
+                  </textPath>
+                </text>
+              </>
+            );
+          })()}
 
           {/* Ring 3 — Segments */}
           {SEGMENTS.map((seg, i) => {
-            const isHovered = hoveredSeg === i;
+            const raStrength = hoveredFaculty?.areas[seg.raKey] ?? 0;
+            const segOpacity = anyHovered ? getHighlightOpacity(raStrength) : 0.92;
+            const segFilter = anyHovered && raStrength > 0 ? getHighlightFilter(raStrength) : undefined;
+            const strokeColor = anyHovered && raStrength >= 2 ? "#222222" : "#111111";
+            const strokeW = anyHovered && raStrength >= 2 ? 3 : 2;
 
-            // Place text lines along curved arcs within the segment
             const midAngle = (seg.startAngle + seg.endAngle) / 2;
             const lineCount = seg.lines.length;
             const lineSpacing = (ring3Outer - ring3Inner) / (lineCount + 1);
@@ -115,42 +187,32 @@ const CircularDiagram: React.FC = () => {
             return (
               <g
                 key={i}
-                onMouseEnter={() => setHoveredSeg(i)}
-                onMouseLeave={() => setHoveredSeg(null)}
                 style={{
-                  transform: isHovered ? `scale(1.04)` : "scale(1)",
-                  transformOrigin: `${cx}px ${cy}px`,
-                  transition: "transform 250ms ease",
-                  cursor: "pointer",
+                  filter: segFilter,
+                  transition: "opacity 300ms ease, filter 300ms ease",
                 }}
               >
                 <path
                   d={describeSegment(cx, cy, ring3Inner, ring3Outer, seg.startAngle, seg.endAngle)}
                   fill={seg.color}
-                  stroke="#111111"
-                  strokeWidth="2"
-                  opacity={isHovered ? 1 : 0.92}
+                  stroke={strokeColor}
+                  strokeWidth={strokeW}
+                  opacity={segOpacity}
+                  style={{ transition: "opacity 300ms ease, stroke 300ms ease, stroke-width 300ms ease" }}
                 />
                 {seg.lines.map((line, li) => {
                   const textRadius = ring3Inner + lineSpacing * (li + 1);
-                  // Determine if text should be flipped (bottom half reads inside-out)
                   const needsFlip = midAngle > 90 && midAngle < 270;
-                  const arcSpread = 40; // degrees for text arc
+                  const arcSpread = 40;
                   const arcId = `segArc-${i}-${li}`;
 
                   return (
                     <g key={li}>
                       <defs>
                         {needsFlip ? (
-                          <path
-                            id={arcId}
-                            d={describeArc(cx, cy, textRadius, midAngle - arcSpread, midAngle + arcSpread)}
-                          />
+                          <path id={arcId} d={describeArc(cx, cy, textRadius, midAngle - arcSpread, midAngle + arcSpread)} />
                         ) : (
-                          <path
-                            id={arcId}
-                            d={describeArcCW(cx, cy, textRadius, midAngle - arcSpread, midAngle + arcSpread)}
-                          />
+                          <path id={arcId} d={describeArcCW(cx, cy, textRadius, midAngle - arcSpread, midAngle + arcSpread)} />
                         )}
                       </defs>
                       <text
@@ -158,7 +220,8 @@ const CircularDiagram: React.FC = () => {
                         fontSize="10.5"
                         fontFamily="'IBM Plex Sans', sans-serif"
                         fontWeight="400"
-                        style={{ pointerEvents: "none" }}
+                        opacity={segOpacity}
+                        style={{ pointerEvents: "none", transition: "opacity 300ms ease" }}
                       >
                         <textPath href={`#${arcId}`} startOffset="50%" textAnchor="middle">
                           {line}
@@ -187,8 +250,8 @@ const CircularDiagram: React.FC = () => {
           </text>
 
           {/* Professor Nodes */}
-          {PROFESSORS.map((prof, i) => {
-            const angle = (360 / PROFESSORS.length) * i - 90;
+          {FACULTY.map((prof, i) => {
+            const angle = (360 / FACULTY.length) * i - 90;
             const pos = polarToCartesian(cx, cy, profR, angle + 90);
             const isHov = hoveredProf === prof.id;
 
@@ -210,60 +273,21 @@ const CircularDiagram: React.FC = () => {
                 />
                 <text
                   x={pos.x}
-                  y={pos.y - 4}
+                  y={pos.y + 1}
                   fill="#FFFFFF"
-                  fontSize="8.5"
-                  fontFamily="'IBM Plex Sans', sans-serif"
-                  fontWeight="400"
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  style={{ pointerEvents: "none" }}
-                >
-                  Prof.
-                </text>
-                <text
-                  x={pos.x}
-                  y={pos.y + 8}
-                  fill="#FFFFFF"
-                  fontSize="10"
+                  fontSize="7"
                   fontFamily="'IBM Plex Sans', sans-serif"
                   fontWeight="500"
                   textAnchor="middle"
                   dominantBaseline="central"
                   style={{ pointerEvents: "none" }}
                 >
-                  {prof.id}
+                  {prof.shortName}
                 </text>
               </g>
             );
           })}
         </svg>
-
-        {/* Professor hover cards */}
-        {PROFESSORS.map((prof, i) => {
-          const angle = (360 / PROFESSORS.length) * i - 90;
-          const pos = polarToCartesian(50, 50, 38.75, angle + 90);
-          const isHov = hoveredProf === prof.id;
-
-          if (!isHov) return null;
-
-          return (
-            <div
-              key={prof.id}
-              className="absolute z-50 w-52 rounded-md border border-border bg-popover p-3 text-popover-foreground shadow-lg pointer-events-none"
-              style={{
-                left: `${pos.x}%`,
-                top: `${pos.y}%`,
-                transform: "translate(-50%, -120%)",
-                animation: "fadeIn 200ms ease",
-              }}
-            >
-              <p className="text-sm font-semibold">{prof.name}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">{prof.lab}</p>
-              <p className="text-xs mt-1 opacity-80">{prof.interests}</p>
-            </div>
-          );
-        })}
       </div>
     </div>
   );
