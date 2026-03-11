@@ -256,7 +256,10 @@ const CircularDiagram: React.FC = () => {
                 key={prof.id}
                 onMouseEnter={() => setHoveredProf(prof.id)}
                 onMouseLeave={() => setHoveredProf(null)}
-                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  if (prof.id === "2") setSelectedProf(prof.id);
+                }}
+                style={{ cursor: prof.id === "2" ? "pointer" : "default" }}
               >
                 <circle
                   cx={pos.x}
