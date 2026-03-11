@@ -235,7 +235,7 @@ const CircularDiagram: React.FC = () => {
                   cx={pos.x}
                   cy={pos.y}
                   r={nodeR}
-                  fill="#FFFFFF"
+                  fill="#D6CFCA"
                   stroke="#111111"
                   strokeWidth={2}
                 />
