@@ -105,7 +105,7 @@ const CircularDiagram: React.FC = () => {
   const entreInner = 215;
   const entreOuter = 255;
   const profR = 310;
-  const nodeR = 32;
+  const nodeR = 42;
 
   const handleSegmentClick = (raKey: string) => {
     setSelectedRA((prev) => (prev === raKey ? null : raKey));
@@ -243,7 +243,7 @@ const CircularDiagram: React.FC = () => {
                   x={pos.x}
                   y={pos.y + 1}
                   fill="#111111"
-                  fontSize="7.5"
+                  fontSize="9.5"
                   fontFamily="'IBM Plex Sans', sans-serif"
                   fontWeight="600"
                   textAnchor="middle"
