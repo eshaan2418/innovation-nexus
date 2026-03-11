@@ -168,12 +168,13 @@ const CircularDiagram: React.FC = () => {
           {/* Ring 3 — Segments */}
           {SEGMENTS.map((seg, i) => {
             const raStrength = hoveredFaculty?.areas[seg.raKey] ?? 0;
-            const segOpacity = anyHovered ? getHighlightOpacity(raStrength) : 0.92;
-            const segFilter = anyHovered && raStrength > 0 ? getHighlightFilter(raStrength) : undefined;
-            const strokeColor = anyHovered && raStrength >= 2 ? "#222222" : "#111111";
-            const strokeW = anyHovered && raStrength >= 2 ? 3 : 2;
-
+            const offset = anyHovered ? getTranslateOffset(raStrength) : 0;
             const midAngle = (seg.startAngle + seg.endAngle) / 2;
+            // Calculate outward translation direction
+            const dirRad = ((midAngle - 90) * Math.PI) / 180;
+            const tx = Math.cos(dirRad) * offset;
+            const ty = Math.sin(dirRad) * offset;
+
             const lineCount = seg.lines.length;
             const lineSpacing = (ring3Outer - ring3Inner) / (lineCount + 1);
 
@@ -181,17 +182,16 @@ const CircularDiagram: React.FC = () => {
               <g
                 key={i}
                 style={{
-                  filter: segFilter,
-                  transition: "opacity 300ms ease, filter 300ms ease",
+                  transform: `translate(${tx}px, ${ty}px)`,
+                  transition: "transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1)",
                 }}
               >
                 <path
                   d={describeSegment(cx, cy, ring3Inner, ring3Outer, seg.startAngle, seg.endAngle)}
                   fill={seg.color}
-                  stroke={strokeColor}
-                  strokeWidth={strokeW}
-                  opacity={segOpacity}
-                  style={{ transition: "opacity 300ms ease, stroke 300ms ease, stroke-width 300ms ease" }}
+                  stroke="#111111"
+                  strokeWidth={2}
+                  opacity={0.92}
                 />
                 {seg.lines.map((line, li) => {
                   const textRadius = ring3Inner + lineSpacing * (li + 1);
@@ -213,8 +213,7 @@ const CircularDiagram: React.FC = () => {
                         fontSize="10.5"
                         fontFamily="'IBM Plex Sans', sans-serif"
                         fontWeight="400"
-                        opacity={segOpacity}
-                        style={{ pointerEvents: "none", transition: "opacity 300ms ease" }}
+                        style={{ pointerEvents: "none" }}
                       >
                         <textPath href={`#${arcId}`} startOffset="50%" textAnchor="middle">
                           {line}
