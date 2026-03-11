@@ -168,6 +168,9 @@ const CircularDiagram: React.FC = () => {
           {SEGMENTS.map((seg, i) => {
             const raStrength = hoveredFaculty?.areas[seg.raKey] ?? 0;
             const offset = anyHovered ? getTranslateOffset(raStrength) : 0;
+            const isHighlighted = anyHovered && raStrength > 0;
+            const fontSize = isHighlighted ? (raStrength === 3 ? 13.5 : raStrength === 2 ? 12.5 : 11.5) : 10.5;
+            const fontWeight = isHighlighted ? "600" : "400";
             const midAngle = (seg.startAngle + seg.endAngle) / 2;
             // Calculate outward translation direction
             const dirRad = ((midAngle - 90) * Math.PI) / 180;
@@ -209,10 +212,10 @@ const CircularDiagram: React.FC = () => {
                       </defs>
                       <text
                         fill={seg.textColor}
-                        fontSize="10.5"
+                        fontSize={fontSize}
                         fontFamily="'IBM Plex Sans', sans-serif"
-                        fontWeight="400"
-                        style={{ pointerEvents: "none" }}
+                        fontWeight={fontWeight}
+                        style={{ pointerEvents: "none", transition: "font-size 300ms ease, font-weight 300ms ease" }}
                       >
                         <textPath href={`#${arcId}`} startOffset="50%" textAnchor="middle">
                           {line}
