@@ -239,19 +239,25 @@ const CircularDiagram: React.FC = () => {
                   stroke="#111111"
                   strokeWidth={2}
                 />
-                <text
-                  x={pos.x}
-                  y={pos.y + 1}
-                  fill="#111111"
-                  fontSize="13"
-                  fontFamily="'IBM Plex Sans', sans-serif"
-                  fontWeight="600"
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  style={{ pointerEvents: "none" }}
-                >
-                  {prof.shortName}
-                </text>
+                {(() => {
+                  const parts = prof.shortName.split(" ");
+                  const firstName = parts[0];
+                  const lastName = parts.slice(1).join(" ");
+                  return (
+                    <text
+                      x={pos.x}
+                      fill="#111111"
+                      fontSize="13"
+                      fontFamily="'IBM Plex Sans', sans-serif"
+                      fontWeight="600"
+                      textAnchor="middle"
+                      style={{ pointerEvents: "none" }}
+                    >
+                      <tspan x={pos.x} dy={lastName ? "-0.4em" : "0.35em"}>{firstName}</tspan>
+                      {lastName && <tspan x={pos.x} dy="1.15em">{lastName}</tspan>}
+                    </text>
+                  );
+                })()}
               </g>
             );
           })}
