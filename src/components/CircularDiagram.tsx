@@ -93,6 +93,7 @@ function getTranslateOffset(strength: number): number {
 
 const CircularDiagram: React.FC = () => {
   const [hoveredProf, setHoveredProf] = useState<string | null>(null);
+  const [selectedProf, setSelectedProf] = useState<string | null>(null);
 
   const cx = 400;
   const cy = 400;
