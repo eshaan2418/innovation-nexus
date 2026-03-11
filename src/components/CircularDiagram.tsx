@@ -9,17 +9,17 @@ interface FacultyMember {
 }
 
 const FACULTY: FacultyMember[] = [
-  { id: "1", name: "Andrew Maxwell", shortName: "A. Maxwell", areas: { ra4: 1 } },
-  { id: "2", name: "Aleksander Czekanski", shortName: "A. Czekanski", areas: { ra1: 2, ra2: 1 } },
-  { id: "3", name: "Zheng Hong (George) Zhu", shortName: "G. Zhu", areas: { ra1: 1, ra2: 2 } },
-  { id: "4", name: "Solomon Boakye-Yiadom", shortName: "S. Boakye-Y.", areas: { ra1: 2, ra2: 1 } },
-  { id: "5", name: "Ronald Hanson", shortName: "R. Hanson", areas: { ra3: 1 } },
-  { id: "6", name: "Garrett Melenka", shortName: "G. Melenka", areas: { ra1: 2, ra2: 1 } },
-  { id: "7", name: "Marina Freire-Gormaly", shortName: "M. Freire-G.", areas: { ra1: 3, ra3: 1 } },
-  { id: "8", name: "Cuiying Jian", shortName: "C. Jian", areas: { ra2: 1, ra3: 2 } },
-  { id: "9", name: "Pouya Rezai", shortName: "P. Rezai", areas: { ra1: 3, ra2: 2, ra3: 1 } },
-  { id: "10", name: "Reza Rizvi", shortName: "R. Rizvi", areas: { ra2: 1 } },
-  { id: "11", name: "Hani Tabatabaei", shortName: "H. Tabatabaei", areas: { ra2: 1 } },
+  { id: "1", name: "Andrew Maxwell", shortName: "Andrew Maxwell", areas: { ra4: 1 } },
+  { id: "2", name: "Aleksander Czekanski", shortName: "Alex Czekanski", areas: { ra1: 2, ra2: 1 } },
+  { id: "3", name: "Zheng Hong (George) Zhu", shortName: "George Zhu", areas: { ra1: 1, ra2: 2 } },
+  { id: "4", name: "Solomon Boakye-Yiadom", shortName: "Solomon Boakye-Yiadom", areas: { ra1: 2, ra2: 1 } },
+  { id: "5", name: "Ronald Hanson", shortName: "Ronald Hanson", areas: { ra3: 1 } },
+  { id: "6", name: "Garrett Melenka", shortName: "Garrett Melenka", areas: { ra1: 2, ra2: 1 } },
+  { id: "7", name: "Marina Freire-Gormaly", shortName: "Marina Freire-Gormaly", areas: { ra1: 3, ra3: 1 } },
+  { id: "8", name: "Cuiying Jian", shortName: "Cuiying Jian", areas: { ra2: 1, ra3: 2 } },
+  { id: "9", name: "Pouya Rezai", shortName: "Pouya Rezai", areas: { ra1: 3, ra2: 2, ra3: 1 } },
+  { id: "10", name: "Reza Rizvi", shortName: "Reza Rizvi", areas: { ra2: 1 } },
+  { id: "11", name: "Hani Tabatabaei", shortName: "Hani Tabatabaei", areas: { ra2: 1 } },
 ];
 
 const SEGMENTS = [
@@ -239,19 +239,26 @@ const CircularDiagram: React.FC = () => {
                   stroke="#111111"
                   strokeWidth={2}
                 />
-                <text
-                  x={pos.x}
-                  y={pos.y + 1}
-                  fill="#111111"
-                  fontSize="11.5"
-                  fontFamily="'IBM Plex Sans', sans-serif"
-                  fontWeight="600"
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  style={{ pointerEvents: "none" }}
-                >
-                  {prof.shortName}
-                </text>
+                {(() => {
+                  const parts = prof.shortName.split(" ");
+                  const firstName = parts[0];
+                  const lastName = parts.slice(1).join(" ");
+                  return (
+                    <text
+                      x={pos.x}
+                      y={pos.y}
+                      fill="#111111"
+                      fontSize="13"
+                      fontFamily="'IBM Plex Sans', sans-serif"
+                      fontWeight="600"
+                      textAnchor="middle"
+                      style={{ pointerEvents: "none" }}
+                    >
+                      <tspan x={pos.x} dy={lastName ? "-0.4em" : "0.35em"}>{firstName}</tspan>
+                      {lastName && <tspan x={pos.x} dy="1.15em">{lastName}</tspan>}
+                    </text>
+                  );
+                })()}
               </g>
             );
           })}
