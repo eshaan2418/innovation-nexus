@@ -26,7 +26,7 @@ const SEGMENTS = [
   {
     raKey: "ra1" as const,
     label: "Additive Manufacturing, Mechatronics, Aerospace & Machine Learning",
-    color: "#B7AEA9",
+    color: "#D6CFCA",
     textColor: "#111111",
     startAngle: -30,
     endAngle: 90,
