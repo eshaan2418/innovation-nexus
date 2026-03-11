@@ -246,6 +246,7 @@ const CircularDiagram: React.FC = () => {
                   return (
                     <text
                       x={pos.x}
+                      y={pos.y}
                       fill="#111111"
                       fontSize="13"
                       fontFamily="'IBM Plex Sans', sans-serif"
