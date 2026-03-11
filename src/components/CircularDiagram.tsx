@@ -131,10 +131,12 @@ const CircularDiagram: React.FC = () => {
           {/* Ring 2 — Entrepreneurship (RA4) */}
           {(() => {
             const ra4Strength = hoveredFaculty?.areas.ra4 ?? 0;
-            const entreOffset = anyHovered ? getTranslateOffset(ra4Strength) : 0;
+            const shouldScale = anyHovered && ra4Strength > 0;
+            const scale = shouldScale ? 1.15 : 1;
             return (
               <g style={{
-                transform: `translateY(${entreOffset}px)`,
+                transform: `scale(${scale})`,
+                transformOrigin: `${cx}px ${cy}px`,
                 transition: "transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1)",
               }}>
                 <circle
