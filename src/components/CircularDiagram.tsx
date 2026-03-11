@@ -26,7 +26,7 @@ const SEGMENTS = [
   {
     raKey: "ra1" as const,
     label: "Additive Manufacturing, Mechatronics, Aerospace & Machine Learning",
-    color: "#B7AEA9",
+    color: "#D6CFCA",
     textColor: "#111111",
     startAngle: -30,
     endAngle: 90,
@@ -42,8 +42,8 @@ const SEGMENTS = [
   {
     raKey: "ra3" as const,
     label: "Sustainable Energy & Environmental Technologies",
-    color: "#686260",
-    textColor: "#FFFFFF",
+    color: "#D6CFCA",
+    textColor: "#111111",
     startAngle: 210,
     endAngle: 330,
   },
@@ -142,7 +142,7 @@ const CircularDiagram: React.FC = () => {
               >
                 <path
                   d={describeSegment(cx, cy, segInner, segOuter, seg.startAngle, seg.endAngle)}
-                  fill={seg.color}
+                  fill={isSelected ? "#686260" : seg.color}
                   stroke="#111111"
                   strokeWidth={isSelected ? 3 : 2}
                   opacity={0.92}
@@ -154,7 +154,7 @@ const CircularDiagram: React.FC = () => {
                       key={li}
                       x={textPos.x}
                       y={textPos.y + yOffset}
-                      fill={seg.textColor}
+                      fill={isSelected ? "#FFFFFF" : seg.textColor}
                       fontSize="13"
                       fontFamily="'IBM Plex Sans', sans-serif"
                       fontWeight="600"
@@ -235,7 +235,7 @@ const CircularDiagram: React.FC = () => {
                   cx={pos.x}
                   cy={pos.y}
                   r={nodeR}
-                  fill="#FFFFFF"
+                  fill="#D6CFCA"
                   stroke="#111111"
                   strokeWidth={2}
                 />
