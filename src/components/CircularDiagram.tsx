@@ -15,21 +15,21 @@ const PROFESSORS = [
 
 const SEGMENTS = [
   {
-    label: "Advanced Materials\nBiomaterials\nDevelopment\nModelling\nCharacterisation",
+    lines: ["Advanced Materials", "Biomaterials", "Development", "Modelling", "Characterisation"],
     color: "#B7AEA9",
     textColor: "#111111",
     startAngle: -30,
     endAngle: 90,
   },
   {
-    label: "Additive Manufacturing\nMedtronics\nAerospace\nMachine Learning",
+    lines: ["Additive Manufacturing", "Medtronics", "Aerospace", "Machine Learning"],
     color: "#D6CFCA",
     textColor: "#111111",
     startAngle: 90,
     endAngle: 210,
   },
   {
-    label: "Sustainable Energy\nEnvironmental\nTechnologies",
+    lines: ["Sustainable Energy", "Environmental", "Technologies"],
     color: "#686260",
     textColor: "#FFFFFF",
     startAngle: 210,
@@ -47,6 +47,14 @@ function describeArc(cx: number, cy: number, r: number, startAngle: number, endA
   const end = polarToCartesian(cx, cy, r, startAngle);
   const largeArc = endAngle - startAngle <= 180 ? "0" : "1";
   return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 0 ${end.x} ${end.y}`;
+}
+
+// Arc going clockwise (for bottom text)
+function describeArcCW(cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
+  const start = polarToCartesian(cx, cy, r, startAngle);
+  const end = polarToCartesian(cx, cy, r, endAngle);
+  const largeArc = endAngle - startAngle <= 180 ? "0" : "1";
+  return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${end.x} ${end.y}`;
 }
 
 function describeSegment(cx: number, cy: number, innerR: number, outerR: number, startAngle: number, endAngle: number) {
@@ -70,23 +78,24 @@ const CircularDiagram: React.FC = () => {
 
   const cx = 400;
   const cy = 400;
-  const centerR = 70;
-  const ring2Inner = 75;
-  const ring2Outer = 120;
-  const ring3Inner = 125;
-  const ring3Outer = 230;
-  const profR = 280;
+  const centerR = 65;
+  const ring2Inner = 70;
+  const ring2Outer = 115;
+  const ring3Inner = 120;
+  const ring3Outer = 260;
+  const profR = 310;
   const nodeR = 28;
 
   return (
     <div className="w-full flex items-center justify-center py-8 md:py-16">
-      <div className="w-full max-w-[700px] aspect-square relative">
-        <svg viewBox="0 0 800 800" className="w-full h-full" aria-label="MTech Invite Research Ecosystem Diagram">
+      <div className="w-full max-w-[750px] aspect-square relative">
+        <svg viewBox="0 0 800 800" className="w-full h-full" aria-label="MTEC Research Ecosystem Diagram">
           {/* Ring 2 — Entrepreneurship */}
           <circle cx={cx} cy={cy} r={(ring2Inner + ring2Outer) / 2} fill="none" stroke="#CC3333" strokeWidth={ring2Outer - ring2Inner} />
-          {/* Curved text for Entrepreneurship */}
+          
+          {/* Curved text for Entrepreneurship — positioned at bottom (south) */}
           <defs>
-            <path id="entreArc" d={describeArc(cx, cy, (ring2Inner + ring2Outer) / 2 + 2, 200, 340)} />
+            <path id="entreArc" d={describeArcCW(cx, cy, (ring2Inner + ring2Outer) / 2 + 1, 130, 230)} />
           </defs>
           <text fill="#FFFFFF" fontSize="13" fontFamily="'IBM Plex Sans', sans-serif" fontWeight="500">
             <textPath href="#entreArc" startOffset="50%" textAnchor="middle">
@@ -96,11 +105,12 @@ const CircularDiagram: React.FC = () => {
 
           {/* Ring 3 — Segments */}
           {SEGMENTS.map((seg, i) => {
-            const midAngle = (seg.startAngle + seg.endAngle) / 2;
-            const textR = (ring3Inner + ring3Outer) / 2;
-            const textPos = polarToCartesian(cx, cy, textR, midAngle);
             const isHovered = hoveredSeg === i;
-            const lines = seg.label.split("\n");
+
+            // Place text lines along curved arcs within the segment
+            const midAngle = (seg.startAngle + seg.endAngle) / 2;
+            const lineCount = seg.lines.length;
+            const lineSpacing = (ring3Outer - ring3Inner) / (lineCount + 1);
 
             return (
               <g
@@ -121,22 +131,42 @@ const CircularDiagram: React.FC = () => {
                   strokeWidth="2"
                   opacity={isHovered ? 1 : 0.92}
                 />
-                {lines.map((line, li) => (
-                  <text
-                    key={li}
-                    x={textPos.x}
-                    y={textPos.y + (li - (lines.length - 1) / 2) * 15}
-                    fill={seg.textColor}
-                    fontSize="11"
-                    fontFamily="'IBM Plex Sans', sans-serif"
-                    fontWeight="400"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    style={{ pointerEvents: "none" }}
-                  >
-                    {line}
-                  </text>
-                ))}
+                {seg.lines.map((line, li) => {
+                  const textRadius = ring3Inner + lineSpacing * (li + 1);
+                  // Determine if text should be flipped (bottom half reads inside-out)
+                  const needsFlip = midAngle > 90 && midAngle < 270;
+                  const arcSpread = 40; // degrees for text arc
+                  const arcId = `segArc-${i}-${li}`;
+
+                  return (
+                    <g key={li}>
+                      <defs>
+                        {needsFlip ? (
+                          <path
+                            id={arcId}
+                            d={describeArc(cx, cy, textRadius, midAngle - arcSpread, midAngle + arcSpread)}
+                          />
+                        ) : (
+                          <path
+                            id={arcId}
+                            d={describeArcCW(cx, cy, textRadius, midAngle - arcSpread, midAngle + arcSpread)}
+                          />
+                        )}
+                      </defs>
+                      <text
+                        fill={seg.textColor}
+                        fontSize="10.5"
+                        fontFamily="'IBM Plex Sans', sans-serif"
+                        fontWeight="400"
+                        style={{ pointerEvents: "none" }}
+                      >
+                        <textPath href={`#${arcId}`} startOffset="50%" textAnchor="middle">
+                          {line}
+                        </textPath>
+                      </text>
+                    </g>
+                  );
+                })}
               </g>
             );
           })}
@@ -145,27 +175,15 @@ const CircularDiagram: React.FC = () => {
           <circle cx={cx} cy={cy} r={centerR} fill="#000000" />
           <text
             x={cx}
-            y={cy - 6}
+            y={cy + 2}
             fill="#FFFFFF"
-            fontSize="16"
+            fontSize="20"
             fontFamily="'IBM Plex Sans', sans-serif"
             fontWeight="600"
             textAnchor="middle"
             dominantBaseline="central"
           >
-            MTech
-          </text>
-          <text
-            x={cx}
-            y={cy + 14}
-            fill="#FFFFFF"
-            fontSize="16"
-            fontFamily="'IBM Plex Sans', sans-serif"
-            fontWeight="600"
-            textAnchor="middle"
-            dominantBaseline="central"
-          >
-            Invite
+            MTEC
           </text>
 
           {/* Professor Nodes */}
@@ -221,10 +239,10 @@ const CircularDiagram: React.FC = () => {
           })}
         </svg>
 
-        {/* Professor hover cards — positioned absolutely over the SVG */}
+        {/* Professor hover cards */}
         {PROFESSORS.map((prof, i) => {
           const angle = (360 / PROFESSORS.length) * i - 90;
-          const pos = polarToCartesian(50, 50, 35, angle + 90); // percentage-based
+          const pos = polarToCartesian(50, 50, 38.75, angle + 90);
           const isHov = hoveredProf === prof.id;
 
           if (!isHov) return null;
