@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import FacultyPopup from "@/components/FacultyPopup";
 
 interface FacultyMember {
   id: string;
@@ -92,6 +93,7 @@ function getTranslateOffset(strength: number): number {
 
 const CircularDiagram: React.FC = () => {
   const [hoveredProf, setHoveredProf] = useState<string | null>(null);
+  const [selectedProf, setSelectedProf] = useState<string | null>(null);
 
   const cx = 400;
   const cy = 400;
@@ -254,7 +256,10 @@ const CircularDiagram: React.FC = () => {
                 key={prof.id}
                 onMouseEnter={() => setHoveredProf(prof.id)}
                 onMouseLeave={() => setHoveredProf(null)}
-                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  if (prof.id === "2") setSelectedProf(prof.id);
+                }}
+                style={{ cursor: prof.id === "2" ? "pointer" : "default" }}
               >
                 <circle
                   cx={pos.x}
@@ -282,6 +287,7 @@ const CircularDiagram: React.FC = () => {
             );
           })}
         </svg>
+        <FacultyPopup open={selectedProf === "2"} onClose={() => setSelectedProf(null)} />
       </div>
     </div>
   );
