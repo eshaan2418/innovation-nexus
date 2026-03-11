@@ -12,7 +12,7 @@ const Index = () => {
   return (
     <div className="min-h-screen" style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}>
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center" style={{ backgroundColor: "#111111" }}>
+      <section className="min-h-screen flex flex-col items-center justify-center" style={{ backgroundColor: "#FFFFFF" }}>
         <h1 className="sr-only">MTech Invite — Academic Research Innovation Ecosystem</h1>
         <CircularDiagram />
         <p className="text-center text-sm tracking-widest uppercase mt-2 mb-10" style={{ color: "#888888", fontWeight: 300 }}>
