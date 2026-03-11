@@ -154,7 +154,7 @@ const CircularDiagram: React.FC = () => {
                       key={li}
                       x={textPos.x}
                       y={textPos.y + yOffset}
-                      fill={seg.textColor}
+                      fill={isSelected ? "#FFFFFF" : seg.textColor}
                       fontSize="13"
                       fontFamily="'IBM Plex Sans', sans-serif"
                       fontWeight="600"
