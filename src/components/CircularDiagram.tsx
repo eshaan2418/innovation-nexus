@@ -287,6 +287,7 @@ const CircularDiagram: React.FC = () => {
             );
           })}
         </svg>
+        <FacultyPopup open={selectedProf === "2"} onClose={() => setSelectedProf(null)} />
       </div>
     </div>
   );
