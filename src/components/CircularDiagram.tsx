@@ -142,7 +142,7 @@ const CircularDiagram: React.FC = () => {
               >
                 <path
                   d={describeSegment(cx, cy, segInner, segOuter, seg.startAngle, seg.endAngle)}
-                  fill={seg.color}
+                  fill={isSelected ? "#686260" : seg.color}
                   stroke="#111111"
                   strokeWidth={isSelected ? 3 : 2}
                   opacity={0.92}
