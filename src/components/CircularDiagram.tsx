@@ -83,18 +83,11 @@ function describeSegment(cx: number, cy: number, innerR: number, outerR: number,
   ].join(" ");
 }
 
-function getHighlightOpacity(strength: number): number {
-  if (strength === 3) return 1;
-  if (strength === 2) return 0.85;
-  if (strength === 1) return 0.7;
-  return 0.35; // faded for non-relevant
-}
-
-function getHighlightFilter(strength: number): string {
-  if (strength === 3) return "brightness(1.25)";
-  if (strength === 2) return "brightness(1.12)";
-  if (strength === 1) return "brightness(1.05)";
-  return "brightness(0.85)";
+function getTranslateOffset(strength: number): number {
+  if (strength === 3) return 18;
+  if (strength === 2) return 12;
+  if (strength === 1) return 7;
+  return 0;
 }
 
 const CircularDiagram: React.FC = () => {
