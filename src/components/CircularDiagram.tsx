@@ -131,10 +131,12 @@ const CircularDiagram: React.FC = () => {
           {/* Ring 2 — Entrepreneurship (RA4) */}
           {(() => {
             const ra4Strength = hoveredFaculty?.areas.ra4 ?? 0;
-            const entreHighlighted = anyHovered && ra4Strength > 0;
-            const entreOpacity = anyHovered ? (ra4Strength > 0 ? 1 : 0.4) : 1;
+            const entreOffset = anyHovered ? getTranslateOffset(ra4Strength) : 0;
             return (
-              <>
+              <g style={{
+                transform: `translateY(${entreOffset}px)`,
+                transition: "transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+              }}>
                 <circle
                   cx={cx}
                   cy={cy}
@@ -142,9 +144,6 @@ const CircularDiagram: React.FC = () => {
                   fill="none"
                   stroke="#CC3333"
                   strokeWidth={ring2Outer - ring2Inner}
-                  opacity={entreOpacity}
-                  filter={entreHighlighted ? "url(#entreGlow)" : undefined}
-                  style={{ transition: "opacity 300ms ease, filter 300ms ease" }}
                 />
                 <defs>
                   <path id="entreArc" d={describeArc(cx, cy, (ring2Inner + ring2Outer) / 2 - 1, 130, 230)} />
@@ -154,14 +153,12 @@ const CircularDiagram: React.FC = () => {
                   fontSize="13"
                   fontFamily="'IBM Plex Sans', sans-serif"
                   fontWeight="500"
-                  opacity={entreOpacity}
-                  style={{ transition: "opacity 300ms ease" }}
                 >
                   <textPath href="#entreArc" startOffset="50%" textAnchor="middle">
                     Entrepreneurship
                   </textPath>
                 </text>
-              </>
+              </g>
             );
           })()}
 
