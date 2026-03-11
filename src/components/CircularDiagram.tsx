@@ -105,7 +105,7 @@ const CircularDiagram: React.FC = () => {
   const entreInner = 215;
   const entreOuter = 255;
   const profR = 310;
-  const nodeR = 32;
+  const nodeR = 42;
 
   const handleSegmentClick = (raKey: string) => {
     setSelectedRA((prev) => (prev === raKey ? null : raKey));
