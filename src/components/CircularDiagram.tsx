@@ -192,7 +192,7 @@ const CircularDiagram: React.FC = () => {
             style={{ pointerEvents: "none" }}
           >
             <textPath href="#entreArc" startOffset="50%" textAnchor="middle">
-              Entrepreneurship &amp; Commercialization
+              Entrepreneurship
             </textPath>
           </text>
 
