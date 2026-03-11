@@ -42,8 +42,8 @@ const SEGMENTS = [
   {
     raKey: "ra3" as const,
     label: "Sustainable Energy & Environmental Technologies",
-    color: "#686260",
-    textColor: "#FFFFFF",
+    color: "#D6CFCA",
+    textColor: "#111111",
     startAngle: 210,
     endAngle: 330,
   },
