@@ -14,7 +14,7 @@ const Index = () => {
       {/* Side-by-side Layout */}
       <section className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 px-6 py-12 bg-background min-h-screen">
         {/* Left: Circular Diagram */}
-        <div className="flex flex-col items-center shrink-0">
+        <div className="flex flex-col items-center shrink-0 w-full lg:w-[60%]">
           <CircularDiagram selectedRA={selectedRA} onSelectRA={setSelectedRA} />
           <p className="text-center text-sm tracking-widest uppercase mt-2 text-muted-foreground" style={{ fontWeight: 300 }}>
             Innovation · Research · Entrepreneurship
