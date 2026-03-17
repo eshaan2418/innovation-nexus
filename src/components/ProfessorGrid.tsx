@@ -33,20 +33,6 @@ const ProfessorGrid: React.FC<ProfessorGridProps> = ({ selectedRA, onReset, onSe
 
   return (
     <div className="w-full max-w-4xl mx-auto px-6">
-      {/* Home / Reset button */}
-      <div className="flex justify-center mb-8">
-        <button
-          onClick={onReset}
-          className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-200 border-2 ${
-            selectedRA === null
-              ? "bg-foreground text-background border-foreground"
-              : "bg-background text-foreground border-border hover:bg-muted"
-          }`}
-          style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
-        >
-          Home
-        </button>
-      </div>
 
       {/* Professor Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 justify-items-center">

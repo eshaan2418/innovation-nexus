@@ -153,8 +153,8 @@ const CircularDiagram: React.FC<CircularDiagramProps> = ({ selectedRA, onSelectR
             </textPath>
           </text>
 
-          {/* Center Circle */}
-          <circle cx={cx} cy={cy} r={centerR} fill="hsl(var(--foreground))" />
+          {/* Center Circle — Home button */}
+          <circle cx={cx} cy={cy} r={centerR} fill="hsl(var(--foreground))" onClick={() => onSelectRA(null)} style={{ cursor: "pointer" }} />
           <text
             x={cx}
             y={cy + 2}
