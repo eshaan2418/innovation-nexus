@@ -84,7 +84,7 @@ const CircularDiagram: React.FC<CircularDiagramProps> = ({ selectedRA, onSelectR
 
   return (
     <div className="w-full flex items-center justify-center">
-      <div className="w-full max-w-[650px] aspect-square relative">
+      <div className="w-full max-w-[800px] aspect-square relative">
         <svg viewBox="100 100 600 600" className="w-full h-full" aria-label="MTEC Research Ecosystem Diagram">
           {/* Inner Segments */}
           {SEGMENTS.map((seg, i) => {
