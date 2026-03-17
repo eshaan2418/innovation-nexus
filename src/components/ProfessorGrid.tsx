@@ -27,29 +27,31 @@ interface ProfessorGridProps {
 }
 
 const ProfessorGrid: React.FC<ProfessorGridProps> = ({ selectedRA, onReset, onSelectProfessor }) => {
-  const filtered = selectedRA
-    ? FACULTY.filter((prof) => (prof.areas as Record<string, number>)[selectedRA] > 0)
-    : FACULTY;
+  const isActive = (prof: FacultyMember) =>
+    !selectedRA || (prof.areas as Record<string, number>)[selectedRA] > 0;
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-6">
-
-      {/* Professor Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 justify-items-center">
-        {filtered.map((prof) => {
+    <div className="w-full">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 justify-items-center">
+        {FACULTY.map((prof) => {
           const parts = prof.name.split(" ");
           const firstName = parts[0];
           const lastName = parts.slice(1).join(" ");
+          const active = isActive(prof);
 
           return (
             <div
               key={prof.id}
               onClick={() => onSelectProfessor?.(prof.id)}
-              className="flex flex-col items-center cursor-pointer group"
+              className="flex flex-col items-center cursor-pointer group transition-opacity duration-300"
+              style={{ opacity: active ? 1 : 0.3 }}
             >
               <div
-                className="w-28 h-28 rounded-full flex items-center justify-center border-2 border-foreground/20 hover:border-foreground/50 transition-colors duration-200"
-                style={{ backgroundColor: "#D6CFCA" }}
+                className="w-28 h-28 rounded-full flex items-center justify-center border-2 transition-colors duration-200"
+                style={{
+                  backgroundColor: "#D6CFCA",
+                  borderColor: active ? "hsl(var(--foreground) / 0.4)" : "hsl(var(--foreground) / 0.1)",
+                }}
               >
                 <div className="text-center px-2">
                   <p
