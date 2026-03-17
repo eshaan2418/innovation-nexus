@@ -16,9 +16,9 @@ const RESEARCH_INTERESTS = [
 ];
 
 const PROJECT_IMAGES = [
-  { src: roboticArmImg, caption: "Robotic arm printing complex curved surfaces" },
-  { src: toolpathImg, caption: "Toolpath planning" },
-  { src: printedArmImg, caption: "Printed patch on a human-like arm" },
+  { src: roboticArmImg, caption: "Robotic arm printing complex curved surfaces", className: "w-full" },
+  { src: toolpathImg, caption: "Toolpath planning", className: "w-[70%]" },
+  { src: printedArmImg, caption: "Printed patch on a human-like arm", className: "w-full" },
 ];
 
 interface FacultyPopupProps {
