@@ -1,49 +1,26 @@
-import React, { useState } from "react";
-import FacultyPopup from "@/components/FacultyPopup";
+import React from "react";
 
-interface FacultyMember {
-  id: string;
-  name: string;
-  shortName: string;
-  areas: { ra1?: number; ra2?: number; ra3?: number; ra4?: number };
+interface CircularDiagramProps {
+  selectedRA: string | null;
+  onSelectRA: (ra: string | null) => void;
 }
-
-const FACULTY: FacultyMember[] = [
-  { id: "1", name: "Andrew Maxwell", shortName: "Andrew Maxwell", areas: { ra4: 1 } },
-  { id: "2", name: "Aleksander Czekanski", shortName: "Alex Czekanski", areas: { ra1: 2, ra2: 1 } },
-  { id: "3", name: "Zheng Hong (George) Zhu", shortName: "George Zhu", areas: { ra1: 1, ra2: 2 } },
-  { id: "4", name: "Solomon Boakye-Yiadom", shortName: "Solomon Boakye-Yiadom", areas: { ra1: 2, ra2: 1 } },
-  { id: "5", name: "Ronald Hanson", shortName: "Ronald Hanson", areas: { ra3: 1 } },
-  { id: "6", name: "Garrett Melenka", shortName: "Garrett Melenka", areas: { ra1: 2, ra2: 1 } },
-  { id: "7", name: "Marina Freire-Gormaly", shortName: "Marina Freire-Gormaly", areas: { ra1: 3, ra3: 1 } },
-  { id: "8", name: "Cuiying Jian", shortName: "Cuiying Jian", areas: { ra2: 1, ra3: 2 } },
-  { id: "9", name: "Pouya Rezai", shortName: "Pouya Rezai", areas: { ra1: 3, ra2: 2, ra3: 1 } },
-  { id: "10", name: "Reza Rizvi", shortName: "Reza Rizvi", areas: { ra2: 1 } },
-  { id: "11", name: "Hani Tabatabaei", shortName: "Hani Tabatabaei", areas: { ra2: 1 } },
-];
 
 const SEGMENTS = [
   {
     raKey: "ra1" as const,
     label: "Additive Manufacturing, Mechatronics, Aerospace & Machine Learning",
-    color: "#D6CFCA",
-    textColor: "#111111",
     startAngle: -30,
     endAngle: 90,
   },
   {
     raKey: "ra2" as const,
     label: "Advanced Materials, Biomaterials, Development, Modelling & Characterisation",
-    color: "#D6CFCA",
-    textColor: "#111111",
     startAngle: 90,
     endAngle: 210,
   },
   {
     raKey: "ra3" as const,
     label: "Sustainable Energy & Environmental Technologies",
-    color: "#D6CFCA",
-    textColor: "#111111",
     startAngle: 210,
     endAngle: 330,
   },
@@ -76,7 +53,6 @@ function describeSegment(cx: number, cy: number, innerR: number, outerR: number,
   ].join(" ");
 }
 
-/** Wrap text into lines of maxChars width */
 function wrapText(text: string, maxChars: number): string[] {
   const words = text.split(" ");
   const lines: string[] = [];
@@ -93,10 +69,7 @@ function wrapText(text: string, maxChars: number): string[] {
   return lines;
 }
 
-const CircularDiagram: React.FC = () => {
-  const [selectedRA, setSelectedRA] = useState<string | null>(null);
-  const [selectedProf, setSelectedProf] = useState<string | null>(null);
-
+const CircularDiagram: React.FC<CircularDiagramProps> = ({ selectedRA, onSelectRA }) => {
   const cx = 400;
   const cy = 400;
   const centerR = 65;
@@ -104,28 +77,16 @@ const CircularDiagram: React.FC = () => {
   const segOuter = 210;
   const entreInner = 215;
   const entreOuter = 255;
-  const profR = 330;
-  const nodeR = 55;
 
   const handleSegmentClick = (raKey: string) => {
-    setSelectedRA((prev) => (prev === raKey ? null : raKey));
+    onSelectRA(selectedRA === raKey ? null : raKey);
   };
 
   return (
-    <div className="w-full flex items-center justify-center py-8 md:py-16">
-      <div className="w-full max-w-[750px] aspect-square relative">
-        <svg viewBox="0 0 800 800" className="w-full h-full" aria-label="MTEC Research Ecosystem Diagram">
-          <defs>
-            <filter id="entreGlow" x="-10%" y="-10%" width="120%" height="120%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
-          {/* Inner Segments (RA1, RA2, RA3) */}
+    <div className="w-full flex items-center justify-center">
+      <div className="w-full max-w-[500px] aspect-square relative">
+        <svg viewBox="100 100 600 600" className="w-full h-full" aria-label="MTEC Research Ecosystem Diagram">
+          {/* Inner Segments */}
           {SEGMENTS.map((seg, i) => {
             const midAngle = (seg.startAngle + seg.endAngle) / 2;
             const textR = (segInner + segOuter) / 2;
@@ -135,15 +96,11 @@ const CircularDiagram: React.FC = () => {
             const isSelected = selectedRA === seg.raKey;
 
             return (
-              <g
-                key={i}
-                onClick={() => handleSegmentClick(seg.raKey)}
-                style={{ cursor: "pointer" }}
-              >
+              <g key={i} onClick={() => handleSegmentClick(seg.raKey)} style={{ cursor: "pointer" }}>
                 <path
                   d={describeSegment(cx, cy, segInner, segOuter, seg.startAngle, seg.endAngle)}
-                  fill={isSelected ? "#686260" : seg.color}
-                  stroke="#111111"
+                  fill={isSelected ? "#686260" : "#D6CFCA"}
+                  stroke="hsl(var(--foreground))"
                   strokeWidth={isSelected ? 3 : 2}
                   opacity={0.92}
                 />
@@ -154,7 +111,7 @@ const CircularDiagram: React.FC = () => {
                       key={li}
                       x={textPos.x}
                       y={textPos.y + yOffset}
-                      fill={isSelected ? "#FFFFFF" : seg.textColor}
+                      fill={isSelected ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))"}
                       fontSize="13"
                       fontFamily="'IBM Plex Sans', sans-serif"
                       fontWeight="600"
@@ -170,13 +127,13 @@ const CircularDiagram: React.FC = () => {
             );
           })}
 
-          {/* Entrepreneurship Ring (outer) */}
+          {/* Entrepreneurship Ring */}
           <circle
             cx={cx}
             cy={cy}
             r={(entreInner + entreOuter) / 2}
             fill="none"
-            stroke="#CC3333"
+            stroke="hsl(var(--primary))"
             strokeWidth={entreOuter - entreInner}
             onClick={() => handleSegmentClick("ra4")}
             style={{ cursor: "pointer" }}
@@ -185,7 +142,7 @@ const CircularDiagram: React.FC = () => {
             <path id="entreArc" d={describeArc(cx, cy, (entreInner + entreOuter) / 2 - 1, 100, 260)} />
           </defs>
           <text
-            fill="#FFFFFF"
+            fill="hsl(var(--primary-foreground))"
             fontSize="14"
             fontFamily="'IBM Plex Sans', sans-serif"
             fontWeight="600"
@@ -197,11 +154,11 @@ const CircularDiagram: React.FC = () => {
           </text>
 
           {/* Center Circle */}
-          <circle cx={cx} cy={cy} r={centerR} fill="#000000" />
+          <circle cx={cx} cy={cy} r={centerR} fill="hsl(var(--foreground))" />
           <text
             x={cx}
             y={cy + 2}
-            fill="#FFFFFF"
+            fill="hsl(var(--primary-foreground))"
             fontSize="22"
             fontFamily="'IBM Plex Sans', sans-serif"
             fontWeight="700"
@@ -210,60 +167,7 @@ const CircularDiagram: React.FC = () => {
           >
             MTEC
           </text>
-
-          {/* Professor Nodes */}
-          {FACULTY.map((prof, i) => {
-            const angle = (360 / FACULTY.length) * i - 90;
-            const pos = polarToCartesian(cx, cy, profR, angle + 90);
-
-            // Determine visibility based on selected RA
-            const isVisible = selectedRA === null || (prof.areas as any)[selectedRA] > 0;
-
-            return (
-              <g
-                key={prof.id}
-                onClick={() => {
-                  if (prof.id === "2") setSelectedProf(prof.id);
-                }}
-                style={{
-                  cursor: prof.id === "2" ? "pointer" : "default",
-                  opacity: isVisible ? 1 : 0.08,
-                  transition: "opacity 350ms ease",
-                }}
-              >
-                <circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r={nodeR}
-                  fill="#D6CFCA"
-                  stroke="#111111"
-                  strokeWidth={2}
-                />
-                {(() => {
-                  const parts = prof.shortName.split(" ");
-                  const firstName = parts[0];
-                  const lastName = parts.slice(1).join(" ");
-                  return (
-                    <text
-                      x={pos.x}
-                      y={pos.y}
-                      fill="#111111"
-                      fontSize="13"
-                      fontFamily="'IBM Plex Sans', sans-serif"
-                      fontWeight="600"
-                      textAnchor="middle"
-                      style={{ pointerEvents: "none" }}
-                    >
-                      <tspan x={pos.x} dy={lastName ? "-0.4em" : "0.35em"}>{firstName}</tspan>
-                      {lastName && <tspan x={pos.x} dy="1.15em">{lastName}</tspan>}
-                    </text>
-                  );
-                })()}
-              </g>
-            );
-          })}
         </svg>
-        <FacultyPopup open={selectedProf === "2"} onClose={() => setSelectedProf(null)} />
       </div>
     </div>
   );
