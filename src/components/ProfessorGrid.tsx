@@ -62,7 +62,7 @@ const ProfessorGrid: React.FC<ProfessorGridProps> = ({ selectedRA, onReset, onSe
                   </p>
                   {lastName && (
                     <p
-                      className="text-foreground text-sm font-semibold leading-tight"
+                      className="text-foreground text-xs font-semibold leading-tight"
                       style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                     >
                       {lastName}
