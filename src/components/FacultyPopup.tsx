@@ -1,10 +1,10 @@
 import React from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { X } from "lucide-react";
-import portraitImg from "@/assets/czekanski-portrait.jpg";
-import roboticArmImg from "@/assets/czekanski-robotic-arm.jpg";
-import toolpathImg from "@/assets/czekanski-toolpath.jpg";
-import printedArmImg from "@/assets/czekanski-printed-arm.jpg";
+import portraitImg from "@/assets/alex-portrait.png";
+import roboticArmImg from "@/assets/robotic-arm.png";
+import toolpathImg from "@/assets/toolpath-planning.png";
+import printedArmImg from "@/assets/printed-patch-arm.png";
 
 const FONT = "'IBM Plex Sans', sans-serif";
 
