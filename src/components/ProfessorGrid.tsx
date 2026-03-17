@@ -47,7 +47,7 @@ const ProfessorGrid: React.FC<ProfessorGridProps> = ({ selectedRA, onReset, onSe
               style={{ opacity: active ? 1 : 0.3 }}
             >
               <div
-                className="w-28 h-28 rounded-full flex items-center justify-center border-2 transition-colors duration-200"
+                className="w-20 h-20 rounded-full flex items-center justify-center border-2 transition-colors duration-200"
                 style={{
                   backgroundColor: "#D6CFCA",
                   borderColor: active ? "hsl(var(--foreground) / 0.4)" : "hsl(var(--foreground) / 0.1)",
@@ -55,14 +55,14 @@ const ProfessorGrid: React.FC<ProfessorGridProps> = ({ selectedRA, onReset, onSe
               >
                 <div className="text-center px-2">
                   <p
-                    className="text-foreground text-sm font-semibold leading-tight"
+                    className="text-foreground text-xs font-semibold leading-tight"
                     style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                   >
                     {firstName}
                   </p>
                   {lastName && (
                     <p
-                      className="text-foreground text-sm font-semibold leading-tight"
+                      className="text-foreground text-xs font-semibold leading-tight"
                       style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
                     >
                       {lastName}
