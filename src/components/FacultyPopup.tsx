@@ -105,11 +105,11 @@ const FacultyPopup: React.FC<FacultyPopupProps> = ({ open, onClose }) => {
             {/* Project Image Gallery */}
             <div className="mt-6 grid grid-cols-3 gap-4">
               {PROJECT_IMAGES.map((img, i) => (
-                <div key={i} className="flex flex-col items-center">
+                <div key={i} className="flex flex-col items-center justify-end">
                   <img
                     src={img.src}
                     alt={img.caption}
-                    className="w-full rounded object-contain"
+                    className={`rounded object-contain ${img.className || "w-full"}`}
                     style={{ display: "block" }}
                   />
                   <p
