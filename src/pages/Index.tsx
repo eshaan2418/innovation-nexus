@@ -17,7 +17,7 @@ const Index = () => {
         <div className="flex flex-col items-center shrink-0 w-full lg:w-[50%]">
           <CircularDiagram selectedRA={selectedRA} onSelectRA={setSelectedRA} />
           <p className="text-center text-sm tracking-widest uppercase mt-2 text-muted-foreground" style={{ fontWeight: 300 }}>
-            Innovation · Research · Entrepreneurship
+            Manufacturing · Technology · Entrepreneurship · Industry Partnership
           </p>
         </div>
 
