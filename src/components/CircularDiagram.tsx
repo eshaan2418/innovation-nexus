@@ -9,20 +9,26 @@ const SEGMENTS = [
   {
     raKey: "ra1" as const,
     label: "Additive Manufacturing, Mechatronics, Aerospace & Machine Learning",
-    startAngle: -30,
+    startAngle: 0,
     endAngle: 90,
   },
   {
     raKey: "ra2" as const,
     label: "Advanced Materials, Biomaterials, Development, Modelling & Characterisation",
     startAngle: 90,
-    endAngle: 210,
+    endAngle: 180,
   },
   {
     raKey: "ra3" as const,
     label: "Sustainable Energy & Environmental Technologies",
-    startAngle: 210,
-    endAngle: 330,
+    startAngle: 180,
+    endAngle: 270,
+  },
+  {
+    raKey: "ra4" as const,
+    label: "Entrepreneurship",
+    startAngle: 270,
+    endAngle: 360,
   },
 ];
 
@@ -127,7 +133,7 @@ const CircularDiagram: React.FC<CircularDiagramProps> = ({ selectedRA, onSelectR
             );
           })}
 
-          {/* Entrepreneurship Ring */}
+          {/* Decorative Entrepreneurship Ring */}
           <circle
             cx={cx}
             cy={cy}
@@ -135,8 +141,7 @@ const CircularDiagram: React.FC<CircularDiagramProps> = ({ selectedRA, onSelectR
             fill="none"
             stroke="hsl(var(--primary))"
             strokeWidth={entreOuter - entreInner}
-            onClick={() => handleSegmentClick("ra4")}
-            style={{ cursor: "pointer" }}
+            style={{ pointerEvents: "none" }}
           />
           <defs>
             <path id="entreArc" d={describeArc(cx, cy, (entreInner + entreOuter) / 2 - 1, 100, 260)} />
