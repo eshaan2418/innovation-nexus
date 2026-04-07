@@ -28,13 +28,14 @@ const Index = () => {
             selectedRA={selectedRA}
             onReset={() => setSelectedRA(null)}
             onSelectProfessor={(id) => {
-              if (id === "2") setSelectedProf(id);
+              if (id === "2" || id === "3") setSelectedProf(id);
             }}
           />
         </div>
       </section>
 
       <FacultyPopup open={selectedProf === "2"} onClose={() => setSelectedProf(null)} />
+      <GeorgeZhuPopup open={selectedProf === "3"} onClose={() => setSelectedProf(null)} />
     </div>
   );
 };
