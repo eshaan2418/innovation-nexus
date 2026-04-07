@@ -2,6 +2,7 @@ import { useState } from "react";
 import CircularDiagram from "@/components/CircularDiagram";
 import ProfessorGrid from "@/components/ProfessorGrid";
 import FacultyPopup from "@/components/FacultyPopup";
+import GeorgeZhuPopup from "@/components/GeorgeZhuPopup";
 
 const Index = () => {
   const [selectedRA, setSelectedRA] = useState<string | null>(null);
