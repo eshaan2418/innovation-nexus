@@ -133,7 +133,7 @@ const CircularDiagram: React.FC<CircularDiagramProps> = ({ selectedRA, onSelectR
             );
           })}
 
-          {/* Entrepreneurship Ring */}
+          {/* Decorative Entrepreneurship Ring */}
           <circle
             cx={cx}
             cy={cy}
@@ -141,8 +141,7 @@ const CircularDiagram: React.FC<CircularDiagramProps> = ({ selectedRA, onSelectR
             fill="none"
             stroke="hsl(var(--primary))"
             strokeWidth={entreOuter - entreInner}
-            onClick={() => handleSegmentClick("ra4")}
-            style={{ cursor: "pointer" }}
+            style={{ pointerEvents: "none" }}
           />
           <defs>
             <path id="entreArc" d={describeArc(cx, cy, (entreInner + entreOuter) / 2 - 1, 100, 260)} />
