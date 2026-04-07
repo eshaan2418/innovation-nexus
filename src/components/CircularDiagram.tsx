@@ -143,20 +143,6 @@ const CircularDiagram: React.FC<CircularDiagramProps> = ({ selectedRA, onSelectR
             strokeWidth={entreOuter - entreInner}
             style={{ pointerEvents: "none" }}
           />
-          <defs>
-            <path id="entreArc" d={describeArc(cx, cy, (entreInner + entreOuter) / 2 - 1, 100, 260)} />
-          </defs>
-          <text
-            fill="hsl(var(--primary-foreground))"
-            fontSize="14"
-            fontFamily="'IBM Plex Sans', sans-serif"
-            fontWeight="600"
-            style={{ pointerEvents: "none" }}
-          >
-            <textPath href="#entreArc" startOffset="50%" textAnchor="middle">
-              Entrepreneurship
-            </textPath>
-          </text>
 
           {/* Center Circle — Home button */}
           <circle cx={cx} cy={cy} r={centerR} fill="hsl(var(--foreground))" onClick={() => onSelectRA(null)} style={{ cursor: "pointer" }} />
