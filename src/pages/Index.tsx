@@ -17,6 +17,9 @@ import stephanieGoraImg from "@/assets/stephanie_gora.png";
 import christopherCaputoImg from "@/assets/christopher_caputo.png";
 import paulOBrienImg from "@/assets/paul_obrien.png";
 import terrySachlosImg from "@/assets/terry_sachlos.png";
+import cuiyingJianImg from "@/assets/cuiying_jian.png";
+import rezaRizviImg from "@/assets/reza_rizvi.png";
+import nimaTabatabaeiImg from "@/assets/nima_tabatabaei.png";
 
 const PROFESSOR_POPUPS: Record<string, { image: string; alt: string }> = {
   "1": { image: andrewMaxwellImg, alt: "Andrew Maxwell Faculty Profile" },
@@ -26,6 +29,9 @@ const PROFESSOR_POPUPS: Record<string, { image: string; alt: string }> = {
   "5": { image: ronaldHansonImg, alt: "Ronald Hanson Faculty Profile" },
   "6": { image: garrettMelenkaImg, alt: "Garrett Melenka Faculty Profile" },
   "7": { image: marinaFreireGormalyImg, alt: "Marina Freire-Gormaly Faculty Profile" },
+  "8": { image: cuiyingJianImg, alt: "Cuiying Jian Faculty Profile" },
+  "10": { image: rezaRizviImg, alt: "Reza Rizvi Faculty Profile" },
+  "11": { image: nimaTabatabaeiImg, alt: "Nima Tabatabaei Faculty Profile" },
   "12": { image: satinderBrarImg, alt: "Satinder K. Brar Faculty Profile" },
   "13": { image: simonePisanaImg, alt: "Simone Pisana Faculty Profile" },
   "14": { image: ryanOrszulikImg, alt: "Ryan Orszulik Faculty Profile" },
