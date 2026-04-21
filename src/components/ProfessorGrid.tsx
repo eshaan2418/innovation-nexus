@@ -19,6 +19,12 @@ export const FACULTY: FacultyMember[] = [
   { id: "10", name: "Reza Rizvi", areas: { ra2: 1 } },
   { id: "11", name: "Hani Tabatabaei", areas: { ra2: 1 } },
   { id: "12", name: "Satinder K. Brar", areas: { ra3: 1 } },
+  { id: "13", name: "Simone Pisana", areas: { ra2: 1, ra3: 1 } },
+  { id: "14", name: "Ryan Orszulik", areas: { ra1: 1, ra2: 1 } },
+  { id: "15", name: "Stephanie Gora", areas: { ra3: 1 } },
+  { id: "16", name: "Christopher Caputo", areas: { ra2: 1, ra3: 1 } },
+  { id: "17", name: "Paul O'Brien", areas: { ra2: 1, ra3: 1 } },
+  { id: "18", name: "Terry Sachlos", areas: { ra1: 1, ra3: 1 } },
 ];
 
 interface ProfessorGridProps {
