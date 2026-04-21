@@ -17,7 +17,7 @@ export const FACULTY: FacultyMember[] = [
   { id: "8", name: "Cuiying Jian", areas: { ra2: 1, ra3: 2 } },
   { id: "9", name: "Pouya Rezai", areas: { ra1: 3, ra2: 2, ra3: 1 } },
   { id: "10", name: "Reza Rizvi", areas: { ra2: 1 } },
-  { id: "11", name: "Hani Tabatabaei", areas: { ra2: 1 } },
+  { id: "11", name: "Nima Tabatabaei", areas: { ra2: 1 } },
   { id: "12", name: "Satinder K. Brar", areas: { ra3: 1 } },
   { id: "13", name: "Simone Pisana", areas: { ra2: 1, ra3: 1 } },
   { id: "14", name: "Ryan Orszulik", areas: { ra1: 1, ra2: 1 } },
